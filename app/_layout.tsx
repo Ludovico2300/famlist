@@ -1,13 +1,7 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
-import { useColorScheme } from "react-native";
 import { TailwindProvider } from "tailwind-rn";
 import utilities from "../tailwind.json";
 
@@ -49,8 +43,6 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
   return (
     //@ts-ignore
     <TailwindProvider utilities={utilities}>
