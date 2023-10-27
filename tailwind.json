@@ -1,1 +1,91 @@
-{}
+{
+	"static": {
+		"style": {
+			"position": "static"
+		}
+	},
+	"fixed": {
+		"style": {
+			"position": "fixed"
+		}
+	},
+	"absolute": {
+		"style": {
+			"position": "absolute"
+		}
+	},
+	"relative": {
+		"style": {
+			"position": "relative"
+		}
+	},
+	"sticky": {
+		"style": {
+			"position": "sticky"
+		}
+	},
+	"block": {
+		"style": {
+			"display": "block"
+		}
+	},
+	"inline": {
+		"style": {
+			"display": "inline"
+		}
+	},
+	"flex": {
+		"style": {
+			"display": "flex"
+		}
+	},
+	"contents": {
+		"style": {
+			"display": "contents"
+		}
+	},
+	"hidden": {
+		"style": {
+			"display": "none"
+		}
+	},
+	"flex-row": {
+		"style": {
+			"flexDirection": "row"
+		}
+	},
+	"flex-col": {
+		"style": {
+			"flexDirection": "column"
+		}
+	},
+	"border": {
+		"style": {
+			"borderTopWidth": 1,
+			"borderRightWidth": 1,
+			"borderBottomWidth": 1,
+			"borderLeftWidth": 1
+		}
+	},
+	"uppercase": {
+		"style": {
+			"textTransform": "uppercase"
+		}
+	},
+	"capitalize": {
+		"style": {
+			"textTransform": "capitalize"
+		}
+	},
+	"text-blue-600": {
+		"style": {
+			"--tw-text-opacity": 1,
+			"color": "rgb(37 99 235 / var(--tw-text-opacity))"
+		}
+	},
+	"underline": {
+		"style": {
+			"textDecorationLine": "underline"
+		}
+	}
+}

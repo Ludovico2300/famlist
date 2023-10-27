@@ -53,13 +53,11 @@ function RootLayoutNav() {
 
   return (
     //@ts-ignore
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <TailwindProvider utilities={utilities}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-        </Stack>
-      </TailwindProvider>
-    </ThemeProvider>
+    <TailwindProvider utilities={utilities}>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+      </Stack>
+    </TailwindProvider>
   );
 }
