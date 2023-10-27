@@ -23,9 +23,9 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
       }}>
       <Tabs.Screen
-        name="index"
+        name="TabOneScreen"
         options={{
-          title: 'Tab One',
+          title: 'TabOneScreen',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
@@ -44,9 +44,16 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="TabTwoScreen"
         options={{
-          title: 'Tab Two',
+          title: 'TabTwoScreen',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="TabThreeScreen"
+        options={{
+          title: 'TabThreeScreen',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
