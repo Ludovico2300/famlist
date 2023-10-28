@@ -4,9 +4,10 @@ import { useTailwind } from "tailwind-rn";
 import { FlatList } from "react-native-gesture-handler";
 import ItemCard from "../components/ItemCard";
 import useDatabaseFirebase from "../hooks/useDatabaseFirebase";
+import { Item } from "../../assets/data/dataMock";
 
 export default function ShoppingListScreen() {
-  const { list, getData } = useDatabaseFirebase();
+  const { list } = useDatabaseFirebase();
   const tw = useTailwind();
 
   // Create an array of unique categories
@@ -30,24 +31,24 @@ export default function ShoppingListScreen() {
 
   return (
     <View style={tw("flex-1 items-center justify-start w-screen")}>
-      {list && list.length >= 1 ? (
+      {list && list.length > 1 ? (
         <FlatList
-          data={list.length == 0 ? [] : categorySummaries}
+          data={categorySummaries.filter((item) => item.category !== "X")}
           keyExtractor={(item) => item.category}
           renderItem={({ item: categorySummary }) => (
             <View key={categorySummary.category}>
-              <Text style={tw("font-bold")}>
-                {categorySummary.category} ({categorySummary.totalCount} items,
-                Total Quantity: {categorySummary.totalQuantity})
+              <Text
+                style={tw(
+                  "font-bold text-xl bg-blue-400 border border-blue-500 rounded"
+                )}
+              >
+                {categorySummary.category} ({categorySummary.totalCount} ogg.,
+                Quantità Totale: {categorySummary.totalQuantity})
               </Text>
               <FlatList
-                data={
-                  list.length == 0
-                    ? []
-                    : list.filter(
-                        (item) => item.category === categorySummary.category
-                      )
-                }
+                data={list.filter(
+                  (item: Item) => item.category === categorySummary.category
+                )}
                 renderItem={({ item }) => <ItemCard item={item} />}
                 style={tw("w-full")}
               />
@@ -55,9 +56,16 @@ export default function ShoppingListScreen() {
           )}
         />
       ) : (
-        <Text style={tw("font-bold text-2xl mt-20")}>
-          La lista della spesa è vuota!
-        </Text>
+        <FlatList
+          data={list}
+          renderItem={() => (
+            <Text style={tw("font-bold text-2xl mt-20")}>
+              La lista della spesa è vuota!
+            </Text>
+          )}
+          style={tw("w-full")}
+          contentContainerStyle={tw("items-center justify-center")}
+        />
       )}
     </View>
   );

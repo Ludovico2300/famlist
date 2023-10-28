@@ -53,7 +53,10 @@ function RootLayoutNav() {
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
         <Stack.Screen
           name="AddItemToListScreen"
-          options={{ presentation: "modal" }}
+          options={{
+            presentation: "modal",
+            title: "Aggiungi alla lista della spesa",
+          }}
         />
         <Stack.Screen
           name="ItemDetailScreen"

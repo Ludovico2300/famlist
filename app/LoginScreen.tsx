@@ -1,13 +1,24 @@
 import { View, Text, SafeAreaView } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTailwind } from "tailwind-rn";
-import { Link } from "expo-router";
+import { Link, useNavigation } from "expo-router";
 import useAuthFirebase from "./hooks/useAuthFirebase";
 
 const LoginScreen = () => {
   const { login, currentUser, signout } = useAuthFirebase();
   const tw = useTailwind();
-  const user = currentUser?.email;
+  const [userName, setUserName] = useState<string>("");
+
+  useEffect(() => {
+    if (currentUser) {
+      if (currentUser.email === "adminantonella@mail.com")
+        setUserName("Antonella");
+      if (currentUser.email === "adminluca@mail.com") setUserName("Luca");
+      if (currentUser.email === "adminludovico@mail.com")
+        setUserName("Ludovico");
+    }
+  }, [currentUser]);
+
   return (
     <SafeAreaView
       style={tw("flex items-center justify-around h-full w-screen")}
@@ -47,7 +58,7 @@ const LoginScreen = () => {
         </>
       ) : (
         <>
-          <Text style={tw("font-bold")}>Ciao {user}</Text>
+          <Text style={tw("font-bold text-3xl")}>Ciao {userName}</Text>
           <View style={tw("flex flex-col items-center w-[30%]")}>
             <Link
               href="/ShoppingListScreen"

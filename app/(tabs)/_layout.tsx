@@ -44,9 +44,9 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="TabThreeScreen"
+        name="UserScreen"
         options={{
-          title: "TabThreeScreen",
+          title: "Utente",
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />

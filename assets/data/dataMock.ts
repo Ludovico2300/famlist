@@ -8,6 +8,17 @@ export type Item = {
   author: string; // Add author property
 };
 
+export const categories = [
+  "BEVANDE",
+  "VERDURA",
+  "FRUTTA",
+  "CARNE",
+  "PESCE",
+  "SURGELATI",
+  "SALUMI E FORMAGGI",
+  "ALTRO",
+];
+
 export const items: Item[] = [
   {
     name: "Burger",

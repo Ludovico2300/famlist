@@ -1,24 +1,24 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTailwind } from "tailwind-rn";
-import { Link } from "expo-router";
+import { Link, useNavigation } from "expo-router";
 
 const Index = () => {
   const tw = useTailwind();
+  const navigation = useNavigation();
 
-  // Function to navigate to the LoginScreen
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, []);
 
   return (
     <View style={tw("h-full justify-center items-center p-5")}>
-      <Text style={tw("text-3xl font-bold text-center mb-4")}>
-        Welcome to My App
-      </Text>
-      <Text style={tw("text-gray-500 text-center mb-6")}>
-        Enjoy your experience!
-      </Text>
+      <Text style={tw("text-3xl font-bold text-center mb-4")}>Benvenuto!</Text>
 
       <Link href="/LoginScreen" style={tw("bg-blue-500 py-2 px-4 rounded-lg")}>
-        <Text style={tw("text-white font-bold")}> Go to LoginScreen!</Text>
+        <Text style={tw("text-white font-bold")}>Inizia a fare la spesa!</Text>
       </Link>
     </View>
   );
