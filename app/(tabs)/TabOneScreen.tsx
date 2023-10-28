@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { Item, items } from "../../assets/data/dataMock";
 import { FlatList } from "react-native-gesture-handler";
+import ItemCard from "../components/ItemCard";
 
 export default function TabOneScreen() {
   const tw = useTailwind();
@@ -59,7 +60,7 @@ export default function TabOneScreen() {
               data={items.filter(
                 (item) => item.category === categorySummary.category
               )}
-              renderItem={renderItem}
+              renderItem={({ item }) => <ItemCard item={item} />}
               style={tw("w-full")}
             />
           </View>
