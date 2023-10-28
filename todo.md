@@ -1,0 +1,4 @@
+- [ADD] add item to list page
+- [ADD] ItemPage (scan item)
+- [ADD] login feature
+- [ADD] databases: 1 shopping list - 1 item database
