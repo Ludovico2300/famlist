@@ -64,8 +64,16 @@
   min-height: 100vh
 }
 
+.w-\[100\%\] {
+  width: 100%
+}
+
 .w-\[30\%\] {
   width: 30%
+}
+
+.w-\[50\%\] {
+  width: 50%
 }
 
 .w-full {
@@ -74,14 +82,6 @@
 
 .w-screen {
   width: 100vw
-}
-
-.w-\[100\%\] {
-  width: 100%
-}
-
-.w-\[50\%\] {
-  width: 50%
 }
 
 .flex-1 {
@@ -128,11 +128,6 @@
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity))
-}
-
-.bg-blue-600 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(37 99 235 / var(--tw-bg-opacity))
 }
 
 .p-5 {

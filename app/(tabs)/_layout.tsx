@@ -27,7 +27,7 @@ export default function TabLayout() {
           title: "TabOneScreen",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
-            <Link href="/modal" asChild>
+            <Link href="/AddItemToListScreen" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome

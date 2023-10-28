@@ -28,6 +28,7 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }) => {
       </View>
       <TouchableOpacity
         onPress={() => {
+          //@ts-ignore
           navigation.navigate("ItemDetailScreen", { item });
         }}
         style={tw("w-[50%]")}

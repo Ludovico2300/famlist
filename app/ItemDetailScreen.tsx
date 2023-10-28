@@ -11,6 +11,7 @@ interface ItemDetailProps {
 
 const ItemDetailScreen: React.FC = () => {
   const tw = useTailwind();
+  //@ts-ignore
   const route = useRoute<ItemDetailProps>();
 
   const item = route.params.item;
