@@ -2,76 +2,83 @@ import { useEffect, useState } from "react";
 import { databaseData } from "../../firebase";
 import { ref, onValue, set, update, remove } from "firebase/database";
 import useAuthFirebase from "./useAuthFirebase";
-import { Item, items } from "../../assets/data/dataMock";
+import { Item } from "../../assets/data/dataMock";
 
 export default function useDatabaseFirebase() {
   const { currentUser } = useAuthFirebase();
   const [list, setList] = useState<Item[]>([]);
-  const currentUserCards = items.filter(
-    (item) => item.author === currentUser?.displayName
-  );
+  const currentUserEmail = currentUser?.email;
 
-  //READ DATABASE
-  useEffect(() => {
-    onValue(ref(databaseData), (snapshot) => {
+  // READ DATABASE
+  const getData = async () => {
+    const databaseRef = ref(databaseData);
+
+    onValue(databaseRef, (snapshot) => {
       const data = snapshot.val();
-      if (data !== null) {
-        setList(data.list);
+
+      if (data && data.list) {
+        // Ensure that data.list exists and is an object
+        const itemList = Object.keys(data.list).map((key) => ({
+          ...data.list[key],
+          name: key, // Use the name as the key
+        }));
+        setList(itemList);
       }
     });
+  };
+
+  useEffect(() => {
+    getData();
   }, []);
 
-  //WRITE DATABASE
-  const writeToDatabase = async (
-    database: any,
-    endpoint: string,
-    identifierEndpoint: any,
-    newData: Item
-  ) => {
-    set(ref(database, endpoint + identifierEndpoint), {
-      id: newData.id,
+  // WRITE DATABASE
+  const writeToDatabase = async (newData: Item) => {
+    const itemRef = ref(databaseData, "/list/" + newData.name); // Use the name as the key
+
+    set(itemRef, {
       name: newData.name,
       description: newData.description,
       category: newData.category,
       quantity: newData.quantity,
-      price: newData.price,
       barcode: newData.barcode,
-      author: currentUser?.displayName,
+      author: currentUserEmail,
     });
   };
 
-  //UPDATE DATABASE
-  const updateDatabase = async (
-    database: any,
-    endpoint: string,
-    identifierEndpoint: any,
-    newData: Item
-  ) => {
-    update(ref(database, endpoint + identifierEndpoint), {
-      id: newData.id,
-      name: newData.name,
-      description: newData.description,
-      category: newData.category,
-      quantity: newData.quantity,
-      price: newData.price,
-      barcode: newData.barcode,
-      author: currentUser?.displayName,
+  // UPDATE DATABASE
+  const updateDatabase = async (updatedData: Item) => {
+    const itemRef = ref(databaseData, "/list/" + updatedData.name);
+
+    update(itemRef, {
+      name: updatedData.name,
+      description: updatedData.description,
+      category: updatedData.category,
+      quantity: updatedData.quantity,
+      barcode: updatedData.barcode,
+      author: currentUserEmail,
     });
   };
-  //DELETE FROM DATABASE
-  const deleteFromDatabase = async (
-    database: any,
-    endpoint: string,
-    identifierEndpoint: any
-  ) => {
-    remove(ref(database, endpoint + identifierEndpoint));
+
+  // DELETE FROM DATABASE
+  const deleteFromDatabase = async (name: string) => {
+    const itemRef = ref(databaseData, "/list/" + name);
+
+    remove(itemRef);
+  };
+
+  // DELETE ALL FROM DATABASE
+  const deleteAllFromDatabase = async () => {
+    const itemRef = ref(databaseData, "/list/");
+
+    remove(itemRef);
   };
 
   return {
     list,
-    currentUserCards,
     writeToDatabase,
     updateDatabase,
     deleteFromDatabase,
+    deleteAllFromDatabase,
+    getData,
   };
 }

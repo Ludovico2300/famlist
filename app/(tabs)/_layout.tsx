@@ -22,16 +22,16 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="TabOneScreen"
+        name="ShoppingListScreen"
         options={{
-          title: "TabOneScreen",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "Lista della Spesa",
+          tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
           headerRight: () => (
             <Link href="/AddItemToListScreen" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome
-                    name="info-circle"
+                    name="plus-circle"
                     size={25}
                     color={"black"}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
@@ -42,18 +42,12 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="TabTwoScreen"
-        options={{
-          title: "TabTwoScreen",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
+
       <Tabs.Screen
         name="TabThreeScreen"
         options={{
           title: "TabThreeScreen",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
     </Tabs>

@@ -14,10 +14,10 @@ const LoginScreen = () => {
     >
       {!currentUser ? (
         <>
-          <Text style={tw("text-red-600")}>Chi sei?</Text>
+          <Text style={tw("font-bold text-3xl")}>Chi sei?</Text>
           <View style={tw("flex flex-col items-center w-[30%] ")}>
             <Link
-              href="/TabOneScreen"
+              href="/ShoppingListScreen"
               style={tw(
                 "bg-blue-500 py-2 px-4 rounded-lg my-3 w-full text-center"
               )}
@@ -26,7 +26,7 @@ const LoginScreen = () => {
               <Text style={tw("text-white font-bold")}>Antonella</Text>
             </Link>
             <Link
-              href="/TabOneScreen"
+              href="/ShoppingListScreen"
               style={tw(
                 "bg-blue-500 py-2 px-4 rounded-lg my-3 w-full text-center"
               )}
@@ -35,7 +35,7 @@ const LoginScreen = () => {
               <Text style={tw("text-white font-bold ")}>Luca</Text>
             </Link>
             <Link
-              href="/TabOneScreen"
+              href="/ShoppingListScreen"
               style={tw(
                 "bg-blue-500 py-2 px-4 rounded-lg my-3 w-full text-center"
               )}
@@ -47,8 +47,16 @@ const LoginScreen = () => {
         </>
       ) : (
         <>
-          <Text style={tw("text-red-600")}>Ciao {user}</Text>
+          <Text style={tw("font-bold")}>Ciao {user}</Text>
           <View style={tw("flex flex-col items-center w-[30%]")}>
+            <Link
+              href="/ShoppingListScreen"
+              style={tw(
+                "bg-blue-500 py-2 px-4 rounded-lg my-3 w-full text-center"
+              )}
+            >
+              <Text style={tw("text-white font-bold")}>Vai alla Lista</Text>
+            </Link>
             <Link
               href="/"
               style={tw(
