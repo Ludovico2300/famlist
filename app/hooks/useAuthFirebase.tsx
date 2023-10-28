@@ -47,7 +47,6 @@ export default function useAuthFirebase() {
     setLoading(true);
     try {
       await signOut(databaseUser);
-      window.location.href = "/";
     } catch (err: any) {
       alert(err.message);
     } finally {
