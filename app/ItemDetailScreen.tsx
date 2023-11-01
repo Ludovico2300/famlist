@@ -1,11 +1,9 @@
-// ItemDetailScreen.tsx
 import React, { useState } from "react";
-import { Button, Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, Text, TextInput, View } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { useRoute } from "@react-navigation/native";
 import { Item } from "../assets/data/dataMock";
-import useDatabaseFirebase from "./hooks/useDatabaseFirebase";
-import { databaseData } from "../firebase";
+import useDatabaseFirebase from "./hooks/useDatabaseListFirebase";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import SelectDropdown from "react-native-select-dropdown";
@@ -23,6 +21,7 @@ const ItemDetailScreen: React.FC = () => {
   const item = route.params.item;
   const navigation = useNavigation();
   const [itemName, setItemName] = useState(item.name);
+  const [itemBrand, setItemBrand] = useState(item.brand);
   const [itemDescription, setItemDescription] = useState(item.description);
   const [itemCategory, setItemCategory] = useState(item.category);
   const [itemBarcode, setItemBarcode] = useState(item.barcode);
@@ -59,7 +58,9 @@ const ItemDetailScreen: React.FC = () => {
   return (
     <View style={tw("flex-1 p-4 justify-around")}>
       <Text style={tw("font-bold text-xl mb-4")}>
-        Modifica lista della spesa
+        {item.quantity >= 1
+          ? "Modifica lista della spesa"
+          : "Dettagli Prodotto"}
       </Text>
 
       <TextInput
@@ -67,6 +68,12 @@ const ItemDetailScreen: React.FC = () => {
         placeholder="Nome"
         value={itemName}
         onChangeText={(text) => setItemName(text)}
+      />
+      <TextInput
+        style={tw("h-12 font-bold border border-blue-500 rounded px-2")}
+        placeholder="Nome"
+        value={itemBrand}
+        onChangeText={(text) => setItemBrand(text)}
       />
       <SelectDropdown
         data={categories}
@@ -90,64 +97,68 @@ const ItemDetailScreen: React.FC = () => {
         value={itemBarcode}
         onChangeText={(text) => setItemBarcode(text)}
       />
-      <View
-        style={tw(
-          "flex flex-row h-12 items-center justify-around font-bold border border-blue-500 rounded px-2"
-        )}
-      >
-        <View style={tw("flex flex-col items-center mx-2")}>
-          <Pressable
-            onPress={() => setItemQuantity(itemQuantity - 1)}
-            disabled={itemQuantity <= 1}
+      {item.quantity >= 1 && (
+        <>
+          <View
+            style={tw(
+              "flex flex-row h-12 items-center justify-around font-bold border border-blue-500 rounded px-2"
+            )}
           >
-            {({ pressed }) => (
-              <FontAwesome
-                name="minus-circle"
-                size={25}
-                color={"black"}
-                style={tw(`${pressed ? "opacity-50" : ""}`)}
-              />
-            )}
-          </Pressable>
-        </View>
-        <Text>{itemQuantity}</Text>
-        <View style={tw("flex flex-col items-center mx-2")}>
-          <Pressable onPress={() => setItemQuantity(itemQuantity + 1)}>
-            {({ pressed }) => (
-              <FontAwesome
-                name="plus-circle"
-                size={25}
-                color={"black"}
-                style={tw(`${pressed ? "opacity-50" : ""}`)}
-              />
-            )}
-          </Pressable>
-        </View>
-      </View>
-      <View style={tw("flex-row w-full items-center justify-around")}>
-        <Pressable>
-          {({ pressed }) => (
-            <FontAwesome
-              name="trash-o"
-              size={50}
-              color={"red"}
-              style={tw(`${pressed ? "opacity-50" : ""}`)}
-              onPress={() => handleDeleteItem()}
-            />
-          )}
-        </Pressable>
-        <Pressable>
-          {({ pressed }) => (
-            <FontAwesome
-              name="edit"
-              size={50}
-              color={"blue"}
-              style={tw(`${pressed ? "opacity-50" : ""}`)}
-              onPress={() => editItemToList()}
-            />
-          )}
-        </Pressable>
-      </View>
+            <View style={tw("flex flex-col items-center mx-2")}>
+              <Pressable
+                onPress={() => setItemQuantity(itemQuantity - 1)}
+                disabled={itemQuantity <= 1}
+              >
+                {({ pressed }) => (
+                  <FontAwesome
+                    name="minus-circle"
+                    size={25}
+                    color={"black"}
+                    style={tw(`${pressed ? "opacity-50" : ""}`)}
+                  />
+                )}
+              </Pressable>
+            </View>
+            <Text>{itemQuantity}</Text>
+            <View style={tw("flex flex-col items-center mx-2")}>
+              <Pressable onPress={() => setItemQuantity(itemQuantity + 1)}>
+                {({ pressed }) => (
+                  <FontAwesome
+                    name="plus-circle"
+                    size={25}
+                    color={"black"}
+                    style={tw(`${pressed ? "opacity-50" : ""}`)}
+                  />
+                )}
+              </Pressable>
+            </View>
+          </View>
+          <View style={tw("flex-row w-full items-center justify-around")}>
+            <Pressable>
+              {({ pressed }) => (
+                <FontAwesome
+                  name="trash-o"
+                  size={50}
+                  color={"red"}
+                  style={tw(`${pressed ? "opacity-50" : ""}`)}
+                  onPress={() => handleDeleteItem()}
+                />
+              )}
+            </Pressable>
+            <Pressable>
+              {({ pressed }) => (
+                <FontAwesome
+                  name="edit"
+                  size={50}
+                  color={"blue"}
+                  style={tw(`${pressed ? "opacity-50" : ""}`)}
+                  onPress={() => editItemToList()}
+                />
+              )}
+            </Pressable>
+          </View>
+        </>
+      )}
     </View>
   );
 };

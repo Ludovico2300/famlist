@@ -1,46 +1,46 @@
 import React, { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useTailwind } from "tailwind-rn";
-import { Item } from "../../assets/data/dataMock";
+import { ItemBarcode } from "../../assets/data/dataMock";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
-import useDatabaseFirebase from "../hooks/useDatabaseListFirebase";
+import useDatabaseListFirebase from "../hooks/useDatabaseListFirebase";
+import useAuthFirebase from "../hooks/useAuthFirebase";
 
-interface ItemCardProps {
-  item: Item;
+interface ItemBarcodeCardProps {
+  item: ItemBarcode;
 }
 
-const ItemCard: React.FC<ItemCardProps> = ({ item }) => {
-  const { updateDatabase } = useDatabaseFirebase();
-  const [quantity, setQuantity] = useState<number>(item.quantity);
+const ItemBarcodeCard: React.FC<ItemBarcodeCardProps> = ({ item }) => {
+  const { writeToDatabase, list } = useDatabaseListFirebase();
+  const { currentUser } = useAuthFirebase();
   const tw = useTailwind();
   const navigation = useNavigation();
+  const currentUserEmail = currentUser?.email ?? "";
 
-  const handleDecrementQuantity = async () => {
+  const handleAddToList = async () => {
+    const itemAlreadyInList = list.find(
+      (itemList) => itemList.barcode === item.barcode
+    );
+
     try {
-      if (quantity > 1) {
-        const updatedItem = {
-          ...item,
-          quantity: quantity - 1,
-        };
-        setQuantity(quantity - 1);
-        updateDatabase(updatedItem);
+      if (itemAlreadyInList) {
+        alert("Prodotto già presente in lista!");
+        return;
       }
-    } catch (e: any) {
-      alert(e.message);
-    }
-  };
 
-  const handleIncrementQuantity = async () => {
-    try {
-      const updatedItem = {
-        ...item,
-        quantity: quantity + 1,
-      };
-      setQuantity(quantity + 1);
-      updateDatabase(updatedItem);
-    } catch (e: any) {
-      alert(e.message);
+      writeToDatabase({
+        name: item.name,
+        brand: item.brand,
+        description: item.description,
+        category: item.category,
+        quantity: 1,
+        barcode: item.barcode,
+        author: currentUserEmail,
+      });
+      alert("Prodotto aggiunto alla lista!");
+    } catch (error) {
+      alert(error);
     }
   };
 
@@ -72,20 +72,7 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }) => {
           </Pressable>
         </View>
         <View style={tw("flex flex-col items-center mx-2")}>
-          <Pressable onPress={handleDecrementQuantity} disabled={quantity <= 1}>
-            {({ pressed }) => (
-              <FontAwesome
-                name="minus-circle"
-                size={25}
-                color={"white"}
-                style={tw(`${pressed ? "opacity-50" : ""}`)}
-              />
-            )}
-          </Pressable>
-        </View>
-        <Text>{quantity}</Text>
-        <View style={tw("flex flex-col items-center mx-2")}>
-          <Pressable onPress={handleIncrementQuantity}>
+          <Pressable onPress={() => handleAddToList()}>
             {({ pressed }) => (
               <FontAwesome
                 name="plus-circle"
@@ -101,4 +88,4 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }) => {
   );
 };
 
-export default ItemCard;
+export default ItemBarcodeCard;

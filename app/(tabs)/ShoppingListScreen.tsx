@@ -3,7 +3,7 @@ import { Button, Text, View } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { FlatList } from "react-native-gesture-handler";
 import ItemCard from "../components/ItemCard";
-import useDatabaseFirebase from "../hooks/useDatabaseFirebase";
+import useDatabaseFirebase from "../hooks/useDatabaseListFirebase";
 import { Item } from "../../assets/data/dataMock";
 
 export default function ShoppingListScreen() {

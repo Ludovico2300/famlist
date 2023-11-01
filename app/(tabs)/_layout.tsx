@@ -44,6 +44,29 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
+        name="ScanScreen"
+        options={{
+          title: "Scan",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="barcode" color={color} />
+          ),
+          headerRight: () => (
+            <Link href="/AddItemToItemsDBScreen" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <FontAwesome
+                    name="plus-circle"
+                    size={25}
+                    color={"black"}
+                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                  />
+                )}
+              </Pressable>
+            </Link>
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="UserScreen"
         options={{
           title: "Utente",

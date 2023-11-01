@@ -1,23 +1,30 @@
 import React, { useState } from "react";
-import { TextInput, View, Button, Pressable, Text } from "react-native";
+import { TextInput, View, Button } from "react-native";
 import { useTailwind } from "tailwind-rn";
-import useDatabaseFirebase from "./hooks/useDatabaseListFirebase";
-import useAuthFirebase from "./hooks/useAuthFirebase";
 import SelectDropdown from "react-native-select-dropdown";
 import { categories } from "../assets/data/dataMock";
-import { FontAwesome } from "@expo/vector-icons";
+import useDatabaseItemsFirebase from "./hooks/useDatabaseItemsFirebase";
+import { useRoute } from "@react-navigation/native";
+import { useNavigation } from "expo-router";
 
-export default function AddItemToListScreen() {
-  const { writeToDatabase } = useDatabaseFirebase();
-  const { currentUser } = useAuthFirebase();
+type AddItemToItemsDBScreenProps = {
+  params: {
+    barcode: string;
+  };
+};
+
+const AddItemToItemsDBScreen: React.FC = () => {
+  //@ts-ignore
+  const route = useRoute<AddItemToItemsDBScreenProps>();
+  const barcode = route.params.barcode;
+  const { writeToDatabase } = useDatabaseItemsFirebase();
   const tw = useTailwind();
   const [itemName, setItemName] = useState("");
-  const [itemBrand, setItemBrand] = useState("");
   const [itemDescription, setItemDescription] = useState("");
   const [itemCategory, setItemCategory] = useState("");
-  const [itemBarcode, setItemBarcode] = useState("");
-  const [itemQuantity, setItemQuantity] = useState(1);
-  const [itemAuthor, setItemAuthor] = useState(currentUser?.email ?? "");
+  const [itemBarcode, setItemBarcode] = useState(barcode);
+  const [itemBrand, setItemBrand] = useState("");
+  const navigation = useNavigation();
 
   const addItemToList = () => {
     handleAddPost();
@@ -26,7 +33,7 @@ export default function AddItemToListScreen() {
     setItemDescription("");
     setItemCategory("");
     setItemBarcode("");
-    setItemQuantity(1);
+    setItemBrand("");
   };
 
   const handleAddPost = async () => {
@@ -42,14 +49,16 @@ export default function AddItemToListScreen() {
 
     try {
       writeToDatabase({
-        name: itemName.toUpperCase(), // Use the item name as the key
+        id: itemBarcode.toUpperCase(),
+        name: itemName.toUpperCase(),
+        brand: itemBrand.toUpperCase(),
         description: itemDescription.toUpperCase(),
         category: itemCategory.toUpperCase(),
-        quantity: Number(itemQuantity),
         barcode: itemBarcode.toUpperCase(),
-        author: itemAuthor,
       });
       alert("Elemento aggiunto con successo");
+      //@ts-ignore
+      navigation.navigate("ScanScreen");
     } catch (e: any) {
       alert(e.message);
     }
@@ -91,41 +100,10 @@ export default function AddItemToListScreen() {
         value={itemBarcode}
         onChangeText={(text) => setItemBarcode(text)}
       />
-      <View
-        style={tw(
-          "flex flex-row h-12 items-center justify-around font-bold border border-blue-500 rounded px-2"
-        )}
-      >
-        <View style={tw("flex flex-col items-center mx-2")}>
-          <Pressable
-            onPress={() => setItemQuantity(itemQuantity - 1)}
-            disabled={itemQuantity <= 1}
-          >
-            {({ pressed }) => (
-              <FontAwesome
-                name="minus-circle"
-                size={25}
-                color={"black"}
-                style={tw(`${pressed ? "opacity-50" : ""}`)}
-              />
-            )}
-          </Pressable>
-        </View>
-        <Text>{itemQuantity}</Text>
-        <View style={tw("flex flex-col items-center mx-2")}>
-          <Pressable onPress={() => setItemQuantity(itemQuantity + 1)}>
-            {({ pressed }) => (
-              <FontAwesome
-                name="plus-circle"
-                size={25}
-                color={"black"}
-                style={tw(`${pressed ? "opacity-50" : ""}`)}
-              />
-            )}
-          </Pressable>
-        </View>
-      </View>
-      <Button title="AGGIUNGI ALLA LISTA DELLA SPESA" onPress={addItemToList} />
+
+      <Button title="AGGIUNGI AL DATABASE" onPress={addItemToList} />
     </View>
   );
-}
+};
+
+export default AddItemToItemsDBScreen;

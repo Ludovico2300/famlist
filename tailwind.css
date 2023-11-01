@@ -22,6 +22,10 @@
   margin: 0.5rem
 }
 
+.m-4 {
+  margin: 1rem
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem
@@ -69,12 +73,24 @@
   height: 3rem
 }
 
+.h-72 {
+  height: 18rem
+}
+
 .h-full {
   height: 100%
 }
 
+.h-\[50\%\] {
+  height: 50%
+}
+
 .min-h-screen {
   min-height: 100vh
+}
+
+.w-80 {
+  width: 20rem
 }
 
 .w-96 {
@@ -95,6 +111,10 @@
 
 .w-screen {
   width: 100vw
+}
+
+.w-auto {
+  width: auto
 }
 
 .flex-1 {
@@ -129,6 +149,10 @@
   justify-content: space-around
 }
 
+.overflow-hidden {
+  overflow: hidden
+}
+
 .rounded {
   border-radius: 0.25rem
 }
@@ -159,6 +183,10 @@
 .bg-red-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(239 68 68 / var(--tw-bg-opacity))
+}
+
+.bg-transparent {
+  background-color: transparent
 }
 
 .bg-white {

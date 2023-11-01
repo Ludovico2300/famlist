@@ -4,7 +4,7 @@ import { ref, onValue, set, update, remove } from "firebase/database";
 import useAuthFirebase from "./useAuthFirebase";
 import { Item } from "../../assets/data/dataMock";
 
-export default function useDatabaseFirebase() {
+export default function useDatabaseListFirebase() {
   const { currentUser } = useAuthFirebase();
   const [list, setList] = useState<Item[]>([]);
   const currentUserEmail = currentUser?.email;
@@ -36,6 +36,8 @@ export default function useDatabaseFirebase() {
     const itemRef = ref(databaseData, "/list/" + newData.name); // Use the name as the key
 
     set(itemRef, {
+      id: newData.barcode,
+      brand: newData.brand,
       name: newData.name,
       description: newData.description,
       category: newData.category,
@@ -50,6 +52,8 @@ export default function useDatabaseFirebase() {
     const itemRef = ref(databaseData, "/list/" + updatedData.name);
 
     update(itemRef, {
+      id: updatedData.barcode,
+      brand: updatedData.brand,
       name: updatedData.name,
       description: updatedData.description,
       category: updatedData.category,

@@ -59,8 +59,18 @@ function RootLayoutNav() {
           }}
         />
         <Stack.Screen
+          name="AddItemToItemsDBScreen"
+          options={{
+            presentation: "modal",
+            title: "Aggiungi al DataBase",
+          }}
+        />
+        <Stack.Screen
           name="ItemDetailScreen"
-          options={{ presentation: "modal" }}
+          options={{
+            presentation: "modal",
+            title: "Dettaglio Prodotto",
+          }}
         />
       </Stack>
     </TailwindProvider>
