@@ -26,6 +26,11 @@
   margin: 1rem
 }
 
+.mx-1 {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem
@@ -73,24 +78,24 @@
   height: 3rem
 }
 
-.h-72 {
-  height: 18rem
+.h-\[50\%\] {
+  height: 50%
+}
+
+.h-auto {
+  height: auto
+}
+
+.h-fit {
+  height: fit-content
 }
 
 .h-full {
   height: 100%
 }
 
-.h-\[50\%\] {
-  height: 50%
-}
-
 .min-h-screen {
   min-height: 100vh
-}
-
-.w-80 {
-  width: 20rem
 }
 
 .w-96 {
@@ -111,10 +116,6 @@
 
 .w-screen {
   width: 100vw
-}
-
-.w-auto {
-  width: auto
 }
 
 .flex-1 {
@@ -234,6 +235,11 @@
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem
 }
 
 .text-xl {
