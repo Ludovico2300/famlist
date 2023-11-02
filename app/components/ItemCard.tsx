@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useTailwind } from "tailwind-rn";
-import { Item } from "../../assets/data/dataMock";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import useDatabaseFirebase from "../hooks/useDatabaseListFirebase";
+import { Item } from "../../assets/types/items";
 
 interface ItemCardProps {
   item: Item;

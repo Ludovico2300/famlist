@@ -4,9 +4,9 @@ import { ref, onValue, set, update, remove } from "firebase/database";
 import useAuthFirebase from "./useAuthFirebase";
 import { Item } from "../../assets/types/items";
 
-export default function useDatabaseListFirebase() {
+export default function useDatabaseCategoriesFirebase() {
   const { currentUser } = useAuthFirebase();
-  const [list, setList] = useState<Item[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const currentUserEmail = currentUser?.email;
 
   // READ DATABASE
@@ -16,13 +16,10 @@ export default function useDatabaseListFirebase() {
     onValue(databaseRef, (snapshot) => {
       const data = snapshot.val();
 
-      if (data && data.list) {
+      if (data && data.categories) {
         // Ensure that data.list exists and is an object
-        const itemList = Object.keys(data.list).map((key) => ({
-          ...data.list[key],
-          name: key, // Use the name as the key
-        }));
-        setList(itemList);
+
+        setCategories(data.categories);
       }
     });
   };
@@ -33,21 +30,14 @@ export default function useDatabaseListFirebase() {
 
   // WRITE DATABASE
   const writeToDatabase = async (newData: Item) => {
-    const itemRef = ref(databaseData, "/list/" + newData.name); // Use the name as the key
+    const itemRef = ref(databaseData, "/categories/" + categories.length); // Use the name as the key
 
     set(itemRef, {
-      id: newData.barcode,
-      brand: newData.brand,
       name: newData.name,
-      description: newData.description,
-      category: newData.category,
-      quantity: newData.quantity,
-      barcode: newData.barcode,
-      author: currentUserEmail,
     });
   };
 
-  // UPDATE DATABASE
+  /*      // UPDATE DATABASE
   const updateDatabase = async (updatedData: Item) => {
     const itemRef = ref(databaseData, "/list/" + updatedData.name);
 
@@ -61,9 +51,9 @@ export default function useDatabaseListFirebase() {
       barcode: updatedData.barcode,
       author: currentUserEmail,
     });
-  };
+  }; */
 
-  // DELETE FROM DATABASE
+  /*   // DELETE FROM DATABASE
   const deleteFromDatabase = async (name: string) => {
     const itemRef = ref(databaseData, "/list/" + name);
 
@@ -75,14 +65,14 @@ export default function useDatabaseListFirebase() {
     const itemRef = ref(databaseData, "/list/");
 
     remove(itemRef);
-  };
+  }; */
 
   return {
-    list,
+    categories,
     writeToDatabase,
-    updateDatabase,
-    deleteFromDatabase,
-    deleteAllFromDatabase,
+    /*     updateDatabase, */
+    /*     deleteFromDatabase,
+    deleteAllFromDatabase, */
     getData,
   };
 }

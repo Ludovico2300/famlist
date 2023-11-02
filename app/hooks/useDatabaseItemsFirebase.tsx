@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { databaseData } from "../../firebase";
 import { ref, onValue, set, update, remove } from "firebase/database";
-import { ItemBarcode } from "../../assets/data/dataMock";
+import { ItemBarcode } from "../../assets/types/items";
 
 export default function useDatabaseItemsFirebase() {
   const [items, setItems] = useState<ItemBarcode[]>([]);

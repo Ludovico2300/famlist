@@ -109,11 +109,6 @@
 			"height": "50%"
 		}
 	},
-	"h-auto": {
-		"style": {
-			"height": "auto"
-		}
-	},
 	"h-fit": {
 		"style": {
 			"height": "fit-content"
@@ -122,6 +117,21 @@
 	"h-full": {
 		"style": {
 			"height": "100%"
+		}
+	},
+	"h-40": {
+		"style": {
+			"height": 160
+		}
+	},
+	"h-[50vh]": {
+		"style": {
+			"height": "50vh"
+		}
+	},
+	"h-auto": {
+		"style": {
+			"height": "auto"
 		}
 	},
 	"min-h-screen": {
@@ -199,6 +209,16 @@
 	"overflow-hidden": {
 		"style": {
 			"overflow": "hidden"
+		}
+	},
+	"overflow-scroll": {
+		"style": {
+			"overflow": "scroll"
+		}
+	},
+	"overflow-y-scroll": {
+		"style": {
+			"overflowY": "scroll"
 		}
 	},
 	"rounded": {

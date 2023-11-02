@@ -5,27 +5,27 @@ import {
   Button,
   Pressable,
   Text,
-  Dimensions,
-  StyleSheet,
   TouchableOpacity,
 } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import useDatabaseFirebase from "./hooks/useDatabaseListFirebase";
 import useAuthFirebase from "./hooks/useAuthFirebase";
 import SelectDropdown from "react-native-select-dropdown";
-import { ItemBarcode, categories } from "../assets/data/dataMock";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import useDatabaseItemsFirebase from "./hooks/useDatabaseItemsFirebase";
 import TextFieldView from "./components/common/TextFieldView";
-const { width } = Dimensions.get("window");
+import useDatabaseCategoriesFirebase from "./hooks/useDatabaseCategoriesFirebase";
+import { ItemBarcode } from "../assets/types/items";
 
 export default function AddItemToListScreen() {
   const { writeToDatabase, list } = useDatabaseFirebase();
+  const { categories } = useDatabaseCategoriesFirebase();
   const { items } = useDatabaseItemsFirebase();
   const { currentUser } = useAuthFirebase();
   const tw = useTailwind();
-  const [selectedItem, setSelectedItem] = useState<ItemBarcode>();
-  const [itemName, setItemName] = useState(selectedItem?.name ?? "");
+  const [selectedItem, setSelectedItem] = useState<ItemBarcode | null>();
+  const [selectedCat, setSelectedCat] = useState<any | null>();
+  const [itemName, setItemName] = useState("");
   const [itemBrand, setItemBrand] = useState("");
   const [itemDescription, setItemDescription] = useState("");
   const [itemCategory, setItemCategory] = useState("");
@@ -34,10 +34,14 @@ export default function AddItemToListScreen() {
   const [itemAuthor, setItemAuthor] = useState(currentUser?.email ?? "");
   const [isManualSearch, setIsManualSearch] = useState(false);
 
+  console.log(categories);
+
   const addItemToList = () => {
     handleAddPost();
     // Reset the form fields
+    setSelectedItem(null);
     setItemName("");
+    setItemBrand("");
     setItemDescription("");
     setItemCategory("");
     setItemBarcode("");
@@ -58,7 +62,9 @@ export default function AddItemToListScreen() {
 
       try {
         writeToDatabase({
+          id: itemBarcode.toUpperCase(),
           name: itemName.toUpperCase(), // Use the item name as the key
+          brand: itemBrand.toUpperCase(),
           description: itemDescription.toUpperCase(),
           category: itemCategory.toUpperCase(),
           quantity: Number(itemQuantity),
@@ -80,7 +86,9 @@ export default function AddItemToListScreen() {
             return;
           }
           writeToDatabase({
+            id: selectedItem.barcode.toUpperCase(),
             name: selectedItem.name.toUpperCase(), // Use the item name as the key
+            brand: selectedItem.brand?.toUpperCase(),
             description: selectedItem.description?.toUpperCase(),
             category: selectedItem.category.toUpperCase(),
             quantity: Number(itemQuantity),
@@ -130,7 +138,7 @@ export default function AddItemToListScreen() {
                 </View>
               );
             }}
-            dropdownStyle={tw("bg-transparent h-fit")}
+            dropdownStyle={tw("bg-transparent")}
             rowStyle={tw("border rounded bg-white my-1")}
             renderCustomizedRowChild={(item) => {
               return (
@@ -186,13 +194,37 @@ export default function AddItemToListScreen() {
 
           <SelectDropdown
             data={categories}
-            onSelect={(selectedItem) => {
-              setItemCategory(selectedItem);
+            onSelect={(selectedCat) => {
+              setItemCategory(selectedCat.name);
             }}
             buttonStyle={tw("border border-blue-500 rounded px-2 w-full")}
-            defaultButtonText="Seleziona una categoria"
-            defaultValue={itemCategory}
+            renderCustomizedButtonChild={(item) => {
+              return (
+                <View
+                  style={tw("flex-row justify-between items-center w-full")}
+                >
+                  <Text style={tw("font-bold uppercase")}>
+                    {itemCategory ? itemCategory : "SELEZIONA CATEGORIA"}
+                  </Text>
+                  <FontAwesome name="chevron-down" color={"#444"} size={18} />
+                </View>
+              );
+            }}
+            dropdownStyle={tw("bg-transparent")}
+            rowStyle={tw("border rounded bg-white")}
+            renderCustomizedRowChild={(item) => {
+              return (
+                <View style={tw("flex-row justify-between mx-1")}>
+                  <Text style={tw("flex text-sm ")}>{item.name}</Text>
+                </View>
+              );
+            }}
+            search
+            searchInputStyle={tw("border border-blue-500 rounded px-2 w-full")}
+            searchPlaceHolder={"Cerca una categoria"}
+            searchPlaceHolderColor={"darkgrey"}
           />
+
           <TextInput
             style={tw("h-12 font-bold border border-blue-500 rounded px-2")}
             placeholder="Descrizione"

@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { useRoute } from "@react-navigation/native";
-import { Item } from "../assets/data/dataMock";
 import useDatabaseFirebase from "./hooks/useDatabaseListFirebase";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import SelectDropdown from "react-native-select-dropdown";
-import { categories } from "../assets/data/dataMock";
+import useDatabaseCategoriesFirebase from "./hooks/useDatabaseCategoriesFirebase";
+import TextFieldView from "./components/common/TextFieldView";
+import { Item } from "../assets/types/items";
 
 interface ItemDetailProps {
   params: { item: Item };
@@ -15,6 +16,7 @@ interface ItemDetailProps {
 
 const ItemDetailScreen: React.FC = () => {
   const { deleteFromDatabase, updateDatabase } = useDatabaseFirebase();
+  const { categories } = useDatabaseCategoriesFirebase();
   const tw = useTailwind();
   //@ts-ignore
   const route = useRoute<ItemDetailProps>();
@@ -41,6 +43,8 @@ const ItemDetailScreen: React.FC = () => {
     try {
       if (item) deleteFromDatabase(item.name); //poichè uso il nome del item come identifier, devo prima eliminare il vecchio item per evitare doppioni
       updateDatabase({
+        id: itemName.toUpperCase(), // Use the item name as the key
+        brand: itemBrand?.toUpperCase(),
         name: itemName.toUpperCase(), // Use the item name as the key
         description: itemDescription?.toUpperCase(),
         category: itemCategory.toUpperCase(),
@@ -62,43 +66,66 @@ const ItemDetailScreen: React.FC = () => {
           ? "Modifica lista della spesa"
           : "Dettagli Prodotto"}
       </Text>
-
-      <TextInput
-        style={tw("h-12 font-bold border border-blue-500 rounded px-2")}
-        placeholder="Nome"
-        value={itemName}
-        onChangeText={(text) => setItemName(text)}
-      />
-      <TextInput
-        style={tw("h-12 font-bold border border-blue-500 rounded px-2")}
-        placeholder="Nome"
-        value={itemBrand}
-        onChangeText={(text) => setItemBrand(text)}
-      />
-      <SelectDropdown
-        data={categories}
-        onSelect={(selectedItem) => {
-          setItemCategory(selectedItem);
-        }}
-        buttonStyle={tw("border border-blue-500 rounded px-2 w-full")}
-        defaultButtonText="Seleziona una categoria"
-        defaultValue={itemCategory}
-      />
-      <TextInput
-        style={tw("h-12 font-bold border border-blue-500 rounded px-2")}
-        placeholder="Descrizione"
-        value={itemDescription}
-        onChangeText={(text) => setItemDescription(text)}
-      />
-
-      <TextInput
-        style={tw("h-12 font-bold border border-blue-500 rounded px-2")}
-        placeholder="Codice"
-        value={itemBarcode}
-        onChangeText={(text) => setItemBarcode(text)}
-      />
-      {item.quantity >= 1 && (
+      {item.quantity >= 1 ? (
         <>
+          <TextInput
+            style={tw("h-12 font-bold border border-blue-500 rounded px-2")}
+            placeholder="Nome"
+            value={itemName}
+            onChangeText={(text) => setItemName(text)}
+          />
+          <TextInput
+            style={tw("h-12 font-bold border border-blue-500 rounded px-2")}
+            placeholder="Nome"
+            value={itemBrand}
+            onChangeText={(text) => setItemBrand(text)}
+          />
+          <SelectDropdown
+            data={categories}
+            onSelect={(selectedCat) => {
+              setItemCategory(selectedCat.name);
+            }}
+            buttonStyle={tw("border border-blue-500 rounded px-2 w-full")}
+            renderCustomizedButtonChild={(item) => {
+              return (
+                <View
+                  style={tw("flex-row justify-between items-center w-full")}
+                >
+                  <Text style={tw("font-bold uppercase")}>
+                    {itemCategory ? itemCategory : "SELEZIONA CATEGORIA"}
+                  </Text>
+                  <FontAwesome name="chevron-down" color={"#444"} size={18} />
+                </View>
+              );
+            }}
+            dropdownStyle={tw("bg-transparent")}
+            rowStyle={tw("border rounded bg-white")}
+            renderCustomizedRowChild={(item) => {
+              return (
+                <View style={tw("flex-row justify-between mx-1")}>
+                  <Text style={tw("flex text-sm ")}>{item.name}</Text>
+                </View>
+              );
+            }}
+            search
+            searchInputStyle={tw("border border-blue-500 rounded px-2 w-full")}
+            searchPlaceHolder={"Cerca una categoria"}
+            searchPlaceHolderColor={"darkgrey"}
+          />
+          <TextInput
+            style={tw("h-12 font-bold border border-blue-500 rounded px-2")}
+            placeholder="Descrizione"
+            value={itemDescription}
+            onChangeText={(text) => setItemDescription(text)}
+          />
+
+          <TextInput
+            style={tw("h-12 font-bold border border-blue-500 rounded px-2")}
+            placeholder="Codice"
+            value={itemBarcode}
+            onChangeText={(text) => setItemBarcode(text)}
+          />
+
           <View
             style={tw(
               "flex flex-row h-12 items-center justify-around font-bold border border-blue-500 rounded px-2"
@@ -157,6 +184,18 @@ const ItemDetailScreen: React.FC = () => {
               )}
             </Pressable>
           </View>
+        </>
+      ) : (
+        <>
+          <TextFieldView title="Nome" value={itemName} />
+          {itemBrand && <TextFieldView title="Marca" value={itemBrand} />}
+          {itemCategory && (
+            <TextFieldView title="Categoria" value={itemCategory} />
+          )}
+          {itemDescription && (
+            <TextFieldView title="Descrizione" value={itemDescription} />
+          )}
+          {itemBarcode && <TextFieldView title="Barcode" value={itemBarcode} />}
         </>
       )}
     </View>

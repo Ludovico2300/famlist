@@ -82,16 +82,24 @@
   height: 50%
 }
 
-.h-auto {
-  height: auto
-}
-
 .h-fit {
   height: fit-content
 }
 
 .h-full {
   height: 100%
+}
+
+.h-40 {
+  height: 10rem
+}
+
+.h-\[50vh\] {
+  height: 50vh
+}
+
+.h-auto {
+  height: auto
 }
 
 .min-h-screen {
@@ -152,6 +160,14 @@
 
 .overflow-hidden {
   overflow: hidden
+}
+
+.overflow-scroll {
+  overflow: scroll
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll
 }
 
 .rounded {

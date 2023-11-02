@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { TextInput, View, Button } from "react-native";
+import { TextInput, View, Button, Text } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import SelectDropdown from "react-native-select-dropdown";
-import { categories } from "../assets/data/dataMock";
 import useDatabaseItemsFirebase from "./hooks/useDatabaseItemsFirebase";
 import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "expo-router";
+import { FontAwesome } from "@expo/vector-icons";
+import useDatabaseCategoriesFirebase from "./hooks/useDatabaseCategoriesFirebase";
 
 type AddItemToItemsDBScreenProps = {
   params: {
@@ -18,6 +19,7 @@ const AddItemToItemsDBScreen: React.FC = () => {
   const route = useRoute<AddItemToItemsDBScreenProps>();
   const barcode = route.params.barcode;
   const { writeToDatabase } = useDatabaseItemsFirebase();
+  const { categories } = useDatabaseCategoriesFirebase();
   const tw = useTailwind();
   const [itemName, setItemName] = useState("");
   const [itemDescription, setItemDescription] = useState("");
@@ -80,12 +82,33 @@ const AddItemToItemsDBScreen: React.FC = () => {
       />
       <SelectDropdown
         data={categories}
-        onSelect={(selectedItem) => {
-          setItemCategory(selectedItem);
+        onSelect={(selectedCat) => {
+          setItemCategory(selectedCat.name);
         }}
         buttonStyle={tw("border border-blue-500 rounded px-2 w-full")}
-        defaultButtonText="Seleziona una categoria"
-        defaultValue={itemCategory}
+        renderCustomizedButtonChild={(item) => {
+          return (
+            <View style={tw("flex-row justify-between items-center w-full")}>
+              <Text style={tw("font-bold uppercase")}>
+                {itemCategory ? itemCategory : "SELEZIONA CATEGORIA"}
+              </Text>
+              <FontAwesome name="chevron-down" color={"#444"} size={18} />
+            </View>
+          );
+        }}
+        dropdownStyle={tw("bg-transparent")}
+        rowStyle={tw("border rounded bg-white")}
+        renderCustomizedRowChild={(item) => {
+          return (
+            <View style={tw("flex-row justify-between mx-1")}>
+              <Text style={tw("flex text-sm ")}>{item.name}</Text>
+            </View>
+          );
+        }}
+        search
+        searchInputStyle={tw("border border-blue-500 rounded px-2 w-full")}
+        searchPlaceHolder={"Cerca una categoria"}
+        searchPlaceHolderColor={"darkgrey"}
       />
       <TextInput
         style={tw("h-12 font-bold border border-blue-500 rounded px-2")}

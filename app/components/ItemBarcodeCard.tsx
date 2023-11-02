@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useTailwind } from "tailwind-rn";
-import { ItemBarcode } from "../../assets/data/dataMock";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import useDatabaseListFirebase from "../hooks/useDatabaseListFirebase";
 import useAuthFirebase from "../hooks/useAuthFirebase";
+import { ItemBarcode } from "../../assets/types/items";
 
 interface ItemBarcodeCardProps {
   item: ItemBarcode;

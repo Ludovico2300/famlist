@@ -4,7 +4,7 @@ import { useTailwind } from "tailwind-rn";
 import { FlatList } from "react-native-gesture-handler";
 import ItemCard from "../components/ItemCard";
 import useDatabaseFirebase from "../hooks/useDatabaseListFirebase";
-import { Item } from "../../assets/data/dataMock";
+import { Item } from "../../assets/types/items";
 
 export default function ShoppingListScreen() {
   const { list } = useDatabaseFirebase();
